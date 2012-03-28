@@ -362,4 +362,5 @@ if __name__ == "__main__":
         dt = time.time() - start
         t = (1.0/float(_CPU_MHZ)) - dt
         print("Took %fseconds" % dt)
-        time.sleep(t)
+        if t >= 0.001:
+            time.sleep(t)
