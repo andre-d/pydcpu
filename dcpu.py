@@ -326,8 +326,6 @@ class DCPU(DCPU_Values, DCPU_OpCodes, DCPU_Options):
         v = int(self.memory[self.pc])
         # Isolate the opcode
         op = v & self._OP_PORTION
-        if op == self.NOP:
-            return # If NOP, do nothing
         # Isolate the A value portion
         a = v & self._AV_PORTION
         # Isolate the B value portion
