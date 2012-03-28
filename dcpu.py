@@ -355,12 +355,19 @@ if __name__ == "__main__":
     import time
     _CPU_MHZ = 100
     cpus = [DCPU() for i in range(500)]
+    i = 0
+    time_total = 0.0
     while(True):
         start = time.time()
         for d in cpus:
             d.tick()
         dt = time.time() - start
+        time_total += dt
         t = (1.0/float(_CPU_MHZ)) - dt
-        print("Took %fseconds" % dt)
+        i += 1
+        if not i % 100:
+            print("Took %fseconds total, with an average of %fseconds" % (time_total, time_total/i))
+            i = 0
+            time_total = 0
         if t >= 0.001:
             time.sleep(t)
