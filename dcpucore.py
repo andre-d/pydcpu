@@ -298,9 +298,10 @@ class DCPUCore(DCPU_Values, DCPU_OpCodes, DCPUCore_Options, threading.Thread):
         start = time.time()
         self.tick()
         dt = time.time() - start
-        t = (1.0/float(self._CPU_MHZ)) - dt
+        t = (1.0/float(self._CPU_MHZ+1)) - dt
         if t > .001:
             time.sleep(t)
+        return time.time() - start
     
     def __init__(self):
         """

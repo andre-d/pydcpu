@@ -13,16 +13,18 @@
 
 from dcpucore import DCPUCore
 import emuplugins
+import sys
 
 def main():
     print("DCPUEmu")
     try:
         core = DCPUCore()
         plugins = emuplugins.load_plugins(core)
-        running = True
         print("...Running...\nCtrl+C to shutdown")
         while True:
-            running = core.run()
+            dt = core.run()
+            status = "Running at %.2fMhz" % (1.0/dt)
+            sys.stdout.write("\r%s\r%s" % (" "*len(status), status))
             while core.is_alive():
                 pass
             for p in plugins:
