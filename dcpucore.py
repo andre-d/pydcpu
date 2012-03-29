@@ -295,17 +295,18 @@ class DCPUCore(DCPU_Values, DCPU_OpCodes, DCPUCore_Options, threading.Thread):
         self._incPC()
     
     def run(self):
-        start = time.time()
         self.tick()
-        dt = time.time() - start
+        dt = time.time() - self.dt
+        self.dt = time.time()
         t = (1.0/float(self._CPU_MHZ+1)) - dt
         if t > .001:
             time.sleep(t)
-        return time.time() - start
+        return dt
     
     def __init__(self):
         """
             Inits cpu registers and memory
         """
         self._init_cpu(self._MEMORY_SIZE, self._NUM_REGISTERS)
+        self.dt = 0
         threading.Thread.__init__(self)
