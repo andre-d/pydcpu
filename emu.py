@@ -15,11 +15,12 @@ from dcpucore import DCPUCore
 import emuplugins
 
 def main():
+    print("DCPUEmu")
     try:
         core = DCPUCore()
         plugins = emuplugins.load_plugins(core)
         running = True
-
+        print("...Running...\nCtrl+C to shutdown")
         while True:
             running = core.run()
             while core.is_alive():
@@ -27,7 +28,7 @@ def main():
             for p in plugins:
                 p.cpu_ticked()
     except (KeyboardInterrupt, SystemExit):
-        print("Shutting down")
+        print("\nShutting down")
     
     emuplugins.shutdown_plugins(plugins)
     
