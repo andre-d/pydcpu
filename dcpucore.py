@@ -151,7 +151,7 @@ class DCPUCore(DCPU_Values, DCPU_OpCodes, DCPUCore_Options, threading.Thread):
     
     def _abort(self, message):
         print(self.__dict__)
-        raise Exception(message)
+        raise SystemExit(message)
     
     def _setval(self, vc, f=None):
         """
