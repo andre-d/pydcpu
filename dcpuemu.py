@@ -272,11 +272,11 @@ class DCPU(DCPU_Values, DCPU_OpCodes, DCPUEmu_Options):
         # Get the current instruction from memory at the program counter
         v = int(self.memory[self.pc])
         # Isolate the opcode
-        op = v & self._OP_PORTION
+        op = (v & self._OP_PORTION) >> self._OP_POSITION
         # Isolate the A value portion
-        a = v & self._AV_PORTION
+        a = (v & self._AV_PORTION) >> self._AV_POSITION
         # Isolate the B value portion
-        b = v & self._BV_PORTION
+        b = (v & self._BV_PORTION) >> self._BV_POSITION
         # Get the actual value of A
         aval = self._getval(a)
         # Get the actual value of B

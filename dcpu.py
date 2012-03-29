@@ -59,10 +59,18 @@ class DCPU_Values:
     _OP_PORTION = 0b0000000000001111
     _AV_PORTION = 0b0000001111110000
     _BV_PORTION = 0b1111110000000000
+    # Bit positions for the above
+    _OP_POSITION = 0
+    _AV_POSITION = 4
+    _BV_POSITION = 10
     
     
     # 8 registers (A, B, C, X, Y, Z, I, J)
     _NUM_REGISTERS = 8 
+    
+    REGISTER_NAMES = ['SP', 'PC', 'O']
+    SPECIAL_REGISTERS = list(REGISTER_NAMES)
+    REGISTER_NAMES += [chr(ord('A') + i) for i in range(_NUM_REGISTERS)]
     
     # All values are 16 bit unsigned
     _MAX_VAL = 0xFFFF
