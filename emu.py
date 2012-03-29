@@ -24,7 +24,8 @@ def main():
         while True:
             dt = core.run()
             status = "Running at %.2fMhz" % (1.0/dt)
-            sys.stdout.write("\r%s\r%s" % (" "*len(status), status))
+            sys.stdout.write("\r%s\r%s" % (" "*(len(status)+3), status))
+            sys.stdout.flush()
             while core.is_alive():
                 pass
             for p in plugins:
