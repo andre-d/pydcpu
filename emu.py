@@ -13,5 +13,53 @@
 
 from dcpucore import DCPUCore
 
-core = DCPUCore()
-core.start()
+def load_plugins(plugins, core):
+    if not plugins:
+        return plugins
+    print("Starting plugins")
+    loaded = []
+    for p in plugins:
+        loaded.append(p(core))
+    for l in loaded:
+        print("Starting plugin %s" % l.name)
+        l.start()
+    return loaded
+
+def shutdown_plugins(plugins):
+    if not plugins:
+        return
+    print("Shutting down plugins")
+    for p in plugins:
+        print("Shutting down %s" % p.name)
+        p.shutdown()
+    
+    shutdown = False
+    while not shutdown:
+        for p in plugins:
+            if p.is_alive():
+                print("Waiting for plugin %s to shutdown" % p.name)
+                continue;
+        shutdown = True
+
+def main():
+    try:
+        plugins = []
+        core = DCPUCore()
+        plugins = load_plugins(plugins, core)
+        running = True
+
+        while True:
+            running = core.run()
+            while core.is_alive():
+                pass
+            for p in plugins:
+                p.cpu_ticked()
+    except (KeyboardInterrupt, SystemExit):
+        print("Shutting down")
+    
+    shutdown_plugins(plugins)
+    
+    exit()
+
+if __name__ == '__main__':
+    main()

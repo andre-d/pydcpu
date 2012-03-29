@@ -29,8 +29,8 @@
 """
 
 import array
-import time
 import threading
+import time
 from dcpu import DCPU_Values, DCPU_OpCodes
 
 class DCPUCore_Options:
@@ -64,7 +64,6 @@ class DCPUCore(DCPU_Values, DCPU_OpCodes, DCPUCore_Options, threading.Thread):
     
     # 16bit unsigned is 'H'
     _MEM_TYPESTR = 'H'
-    running = True
     
     def _buffer(self, size, default, typestr=_MEM_TYPESTR):
         """
@@ -296,11 +295,11 @@ class DCPUCore(DCPU_Values, DCPU_OpCodes, DCPUCore_Options, threading.Thread):
         self._incPC()
     
     def run(self):
-        while(self.running):
-            start = time.time()
-            self.tick()
-            dt = time.time() - start
-            t = (1.0/float(self._CPU_MHZ)) - dt
+        start = time.time()
+        self.tick()
+        dt = time.time() - start
+        t = (1.0/float(self._CPU_MHZ)) - dt
+        if t > .001:
             time.sleep(t)
     
     def __init__(self):
