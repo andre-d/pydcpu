@@ -29,9 +29,11 @@
 """
 
 import array
+import time
+import threading
 from dcpu import DCPU_Values, DCPU_OpCodes
 
-class DCPUEmu_Options:
+class DCPUCore_Options:
     """
         Options which could possibly be changed as needed
     """
@@ -50,15 +52,19 @@ class DCPUEmu_Options:
     
     # Default Stack Pointer value
     _SP_DEFAULT = 0
+    
+    # Speed to run the cpu at
+    _CPU_MHZ = 100
 
 
-class DCPU(DCPU_Values, DCPU_OpCodes, DCPUEmu_Options):
+class DCPUCore(DCPU_Values, DCPU_OpCodes, DCPUCore_Options, threading.Thread):
     """
         Implements dcpu version 3
     """
     
     # 16bit unsigned is 'H'
     _MEM_TYPESTR = 'H'
+    running = True
     
     def _buffer(self, size, default, typestr=_MEM_TYPESTR):
         """
@@ -289,29 +295,17 @@ class DCPU(DCPU_Values, DCPU_OpCodes, DCPUEmu_Options):
         # Increase the program counter
         self._incPC()
     
+    def run(self):
+        while(self.running):
+            start = time.time()
+            self.tick()
+            dt = time.time() - start
+            t = (1.0/float(self._CPU_MHZ)) - dt
+            time.sleep(t)
+    
     def __init__(self):
         """
             Inits cpu registers and memory
         """
         self._init_cpu(self._MEMORY_SIZE, self._NUM_REGISTERS)
-
-if __name__ == "__main__":
-    import time
-    _CPU_MHZ = 100
-    cpus = [DCPU() for i in range(500)]
-    i = 0
-    time_total = 0.0
-    while(True):
-        start = time.time()
-        for d in cpus:
-            d.tick()
-        dt = time.time() - start
-        time_total += dt
-        t = (1.0/float(_CPU_MHZ)) - dt
-        i += 1
-        if not i % 100:
-            print("Took %fseconds total, with an average of %fseconds" % (time_total, time_total/i))
-            i = 0
-            time_total = 0
-        if t >= 0.001:
-            time.sleep(t)
+        threading.Thread.__init__(self)
