@@ -13,7 +13,6 @@
 
 """
     An implementation of dcpu spec from Mojang/Notch
-    Implements: Spec version 3
     (http://notch.tumblr.com/post/20056289891/start-classified-transmission)
     
     Should run in any version of python 2 or 3
