@@ -66,11 +66,12 @@ class DCPU_Values:
     
     
     # 8 registers (A, B, C, X, Y, Z, I, J)
-    _NUM_REGISTERS = 8 
+    _NUM_REGISTERS = 8
     
     REGISTER_NAMES = ['SP', 'PC', 'O']
     SPECIAL_REGISTERS = list(REGISTER_NAMES)
-    REGISTER_NAMES += [chr(ord('A') + i) for i in range(_NUM_REGISTERS)]
+    LETTER_REGISTERS = ('A', 'B', 'C', 'X', 'Y', 'Z', 'I', 'J')
+    REGISTER_NAMES += LETTER_REGISTERS
     
     # All values are 16 bit unsigned
     _MAX_VAL = 0xFFFF
