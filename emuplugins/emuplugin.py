@@ -27,7 +27,7 @@ class EmuPlugin(threading.Thread):
     
     running = True
     cpu = None
-    name = "Unknown"
+    name = None
     
     def tick(self):
         """
@@ -57,5 +57,5 @@ class EmuPlugin(threading.Thread):
     
     def __init__(self, cpu):
         self.cpu = cpu
-        self.name = self.__class__.__name__
+        self.name = self.__class__.__name__ if not self.name else self.name
         threading.Thread.__init__(self)
